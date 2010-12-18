@@ -1,0 +1,2 @@
+rvm --create jruby@frogfish
+rvm use jruby@frogfish
