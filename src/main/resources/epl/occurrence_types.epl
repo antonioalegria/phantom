@@ -1,0 +1,11 @@
+
+module com.antonioalegria.frogfish.epl.occurrence_types;
+
+@Name('broa-decl_in_Tweet')
+create schema Occurrence as (uri string, key string, quantity long, ts long);
+
+@Name('broa-decl_in_Tweet')
+create schema OccurrencesPerMinute as (uri string, key string, quantity long);
+
+@Name('broa-decl_in_Tweet')
+create schema OccurrenceStat(uri string, key string, trix double, ema double, sma double, period long, datapoints long, ts long);

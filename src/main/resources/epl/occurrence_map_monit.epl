@@ -1,0 +1,45 @@
+
+module com.antonioalegria.frogfish.epl.occurrence_map_monit;
+
+uses com.antonioalegria.frogfish.epl.occurrence_types;
+uses com.antonioalegria.frogfish.epl.occurrence_map;
+
+@Name('create_nw_CurrentOccurrences')
+on pattern [ every timer:at(*/1,*,*,*,*,30)]
+insert into out_ValueUpdate
+select 'com.antonioalegria.frogfish.monit.nw_CurrentOccurrences.size' as uri,
+       uri as key,
+       count(*) as value,
+       current_timestamp() as ts
+from nw_CurrentOccurrences
+group by uri;
+
+//
+// @Name('create_nw_CurrentOccurrences')
+// on pattern [ every timer:at(*/1,*,*,*,*,30)]
+// insert into out_nw_CurrentOccurrences
+// select *
+// from nw_CurrentOccurrences;
+//
+
+// @Name('OccurrenceStat')
+// insert into out_OccurrencesPerMinute
+// select *
+// from OccurrencesPerMinute;
+
+@Name('OccurrenceStat')
+insert into out_ValueUpdate
+select 'com.antonioalegria.frogfish.monit.Occurrence.count' as uri,
+       uri as key,
+       count(*) as value,
+       current_timestamp() as ts
+from Occurrence.win:time(60 seconds)
+group by uri
+output last at(*/1,*,*,*,*,30)
+
+// @Name('OccurrenceStat')
+// insert into out_Occurrence
+// select *
+// from Occurrence;
+
+;

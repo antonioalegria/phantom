@@ -1,0 +1,67 @@
+
+module com.antonioalegria.frogfish.epl.occurrence_reduce_monit;
+
+uses com.antonioalegria.frogfish.epl.occurrence_types;
+uses com.antonioalegria.frogfish.epl.occurrence_reduce;
+
+// @Name('OccurrenceStat')
+// insert into out_ValueUpdate
+// select 'OccurrencesPerMinute.count' as uri,
+//        uri as key,
+//        count(*) as value,
+//        current_timestamp() as ts
+// from OccurrencesPerMinute.win:time(60 seconds)
+// group by uri
+// output last at(*/1,*,*,*,*,30);
+
+@Name('OccurrenceStat')
+insert into out_ValueUpdate
+select 'OccurrenceStat.count' as uri,
+       uri||':'||cast(period,string) as key,
+       count(*) as value,
+       current_timestamp() as ts
+from OccurrenceStat.win:time(60 seconds)
+group by uri, period
+output last at(*/1,*,*,*,*,30)
+
+// @Name('OccurrenceStat')
+// insert into out_ValueUpdate
+// select 'OccurrenceSma.count' as uri,
+//        uri||':'||cast(period,string) as key,
+//        count(*) as value,
+//        current_timestamp() as ts
+// from OccurrenceSma.win:time(60 seconds)
+// group by uri, period
+// output last at(*/1,*,*,*,*,30);
+//
+// @Name('OccurrenceStat')
+// insert into out_ValueUpdate
+// select 'OccurrenceTrix.count' as uri,
+//        uri||':'||cast(period,string) as key,
+//        count(*) as value,
+//        current_timestamp() as ts
+// from OccurrenceTrix.win:time(60 seconds)
+// group by uri, period
+// output last at(*/1,*,*,*,*,30);
+//
+// @Name('OccurrenceStat')
+// insert into out_OccurrencesPerMinute
+// select *
+// from OccurrencesPerMinute;
+//
+// @Name('OccurrenceStat')
+// insert into out_OccurrenceTrix
+// select *
+// from OccurrenceTrix;
+//
+// @Name('OccurrenceStat')
+// insert into out_OccurrenceSma
+// select *
+// from OccurrenceSma;
+//
+// @Name('OccurrenceStat')
+// insert into out_OccurrenceStat
+// select *
+// from OccurrenceStat;
+
+;

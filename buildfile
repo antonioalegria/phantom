@@ -10,17 +10,34 @@ COPYRIGHT = ""
 # Specify Maven 2.0 remote repositories here, like this:
 #repositories.remote << "http://www.ibiblio.org/maven2/"
 repositories.remote << "http://repo1.maven.org/maven2/"
+repositories.remote << "http://no-commons-logging.zapto.org/mvn2"
 
 module Frogfish
   COMPILE_LIBRARIES = []
-  COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'
+  # LOGGING
+  COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:99.0-does-not-exist'
+  COMPILE_LIBRARIES << 'org.slf4j:jcl-over-slf4j:jar:1.6.1'
+  COMPILE_LIBRARIES << 'org.slf4j:slf4j-api:jar:1.6.1'
+  COMPILE_LIBRARIES << 'ch.qos.logback:logback-core:jar:0.9.26'
+  COMPILE_LIBRARIES << 'ch.qos.logback:logback-classic:jar:0.9.26'
+
+  # ESPER
   COMPILE_LIBRARIES << 'com.espertech:esper:jar:4.0.0'
+
+  # AMQ
+  COMPILE_LIBRARIES << 'org.apache.activemq:activemq-core:jar:5.4.2'
+
+  # JSON
   COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-core-asl:jar:1.6.3'
   COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-mapper-asl:jar:1.6.3'
-  COMPILE_LIBRARIES << 'org.apache.activemq:activemq-all:jar:5.4.2'
-  COMPILE_LIBRARIES << 'commons-lang:commons-lang:jar:2.5'
-  COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:1.1.1'
 
+  # CORE & COMMON
+  COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'
+  COMPILE_LIBRARIES << 'commons-lang:commons-lang:jar:2.5'
+
+  # COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:1.1.1'
+  # COMPILE_LIBRARIES << 'net.liftweb:lift-util_2.8.1:jar:2.2-SNAPSHOT'
+  # COMPILE_LIBRARIES << 'log4j:log4j:jar:1.2.16'
   RUN_LIBRARIES = COMPILE_LIBRARIES.dup
 end
 
@@ -29,7 +46,10 @@ define "frogfish-scala" do
   project.version = VERSION_NUMBER
   project.group = GROUP
   manifest["Implementation-Vendor"] = COPYRIGHT
-  Frogfish::COMPILE_LIBRARIES.each { |x| compile.with x }
-  Frogfish::RUN_LIBRARIES.each { |x| run.with x }
+  Frogfish::COMPILE_LIBRARIES.each { |x| compile.with transitive(x) }
+  Frogfish::RUN_LIBRARIES.each { |x| run.with transitive(x) }
+
+  run.using :main => "com.antonioalegria.frogfish.Frogfish", :java_args => ["-server"]
+
   package :jar
 end

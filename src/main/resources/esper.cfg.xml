@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<esper-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.espertech.com/schema/esper"
+    xsi:noNamespaceSchemaLocation="esper-configuration-3-0.xsd">
+
+  <engine-settings>
+    <defaults>
+      <metrics-reporting enabled="false" engine-interval="900000" statement-interval="900000" threading="true"/>
+    <threading>
+      <threadpool-outbound enabled="true" num-threads="2" capacity="1000"/>
+      <threadpool-outbound enabled="true" num-threads="4" capacity="50000"/>
+    </threading>
+    </defaults>
+  </engine-settings>
+
+  <!-- TODO: -->
+  <!-- @config.addImport("java.lang.*")
+  @config.addImport("java.math.*")
+  @config.addImport("java.text.*")
+  @config.addImport("java.util.*")
+  @config.addImport("java.lang.reflect.*")
+  @config.addImport("org.apache.commons.lang.*") -->
+
+  <plugin-view namespace="custom" name="trix" factory-class="com.antonioalegria.frogfish.TrixViewFactory" />
+
+</esper-configuration>
+

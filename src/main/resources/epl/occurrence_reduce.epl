@@ -1,0 +1,91 @@
+
+module com.antonioalegria.frogfish.epl.occurrence_reduce;
+
+uses com.antonioalegria.frogfish.epl.occurrence_types;
+// TODO: no need?? uses com.antonioalegria.frogfish.epl.occurrence_map;
+
+@Name('OccurrenceTrix_5_3')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceTrix
+select uri, key, trix, ema1 as ema, period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).custom:trix(5, 3, cast(quantity,double));
+
+@Name('OccurrenceTrix_15_9')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceTrix
+select uri, key, trix, ema1 as ema, period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).custom:trix(15, 9, cast(quantity,double)).win:time(55 seconds)
+output snapshot at(*/3,*,*,*,*,5);
+
+@Name('OccurrenceTrix_30_18')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceTrix
+select uri, key, trix, ema1 as ema, period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).custom:trix(30, 18, cast(quantity,double)).win:time(55 seconds)
+output snapshot at(*/5,*,*,*,*,10);
+
+@Name('OccurrenceTrix_60_36')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceTrix
+select uri, key, trix, ema1 as ema, period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).custom:trix(60, 36, cast(quantity,double)).win:time(55 seconds)
+output snapshot at(*/13,*,*,*,*,15);
+
+@Name('OccurrenceSma_5')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceSma
+select uri, key, total/5D as sma, 5L as period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).win:length(5).stat:uni(quantity);
+
+@Name('OccurrenceSma_15')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceSma
+select uri, key, total/15D as sma, 15L as period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).win:length(15).stat:uni(quantity).win:time(55 seconds)
+output snapshot at(*/3,*,*,*,*,5);
+
+@Name('OccurrenceSma_30')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceSma
+select uri, key, total/30D as sma, 30L as period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).win:length(30).stat:uni(quantity).win:time(55 seconds)
+output snapshot at(*/5,*,*,*,*,10);
+
+@Name('OccurrenceSma_60')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrenceSma
+select uri, key, total/60D as sma, 60L as period, datapoints
+from OccurrencesPerMinute.std:groupwin(uri, key).win:length(60).stat:uni(quantity).win:time(55 seconds)
+output snapshot at(*/11,*,*,*,*,15);
+
+@Name('OccurrenceStat')
+insert into OccurrenceStat
+select otrix.uri as uri,
+       otrix.key as key,
+       otrix.trix as trix,
+       otrix.ema as ema,
+       osma.sma as sma,
+       otrix.period as period,
+       otrix.datapoints as datapoints,
+       current_timestamp() as ts
+from OccurrenceTrix.win:time(20 seconds) as otrix inner join
+     OccurrenceSma.win:time(20 seconds) as osma
+on otrix.uri = osma.uri and otrix.key = osma.key
+where otrix.period = osma.period
+
+/*
+@Name('out_OccurrenceStatTrendingTop5')
+insert into out_OccurrenceStatTrendingTop5
+select uri, key, period, ema, trix, sma, datapoints
+from OccurrenceStat(datapoints >= period, trix >= 0D).std:groupwin(period).win:time(70 seconds).std:unique(uri, key).ext:sort(5, ema desc, datapoints desc, uri asc, key asc)
+output snapshot every 1 minute
+order by period asc, ema desc, datapoints desc, uri asc, key asc;
+
+@Name('out_OccurrenceStatFadingTop5')
+insert into out_OccurrenceStatFadingTop5
+select uri, key, period, ema, trix, sma, datapoints
+from OccurrenceStat(datapoints >= period, trix < 0D).std:groupwin(period).win:time(70 seconds).std:unique(uri, key).ext:sort(5, ema desc, datapoints desc, uri asc, key asc)
+output snapshot every 1 minute
+order by period asc, ema desc, datapoints desc, uri asc, key asc;
+*/
+;

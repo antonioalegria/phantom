@@ -1,0 +1,27 @@
+
+module com.antonioalegria.frogfish.epl.occurrence_map;
+
+uses com.antonioalegria.frogfish.epl.occurrence_types;
+
+@Name('create_nw_CurrentOccurrences')
+create window nw_CurrentOccurrences.win:time(61 minutes).std:unique(uri, key) as Occurrence;
+
+@Name('insert_Occurrences')
+on Occurrence
+insert into nw_CurrentOccurrences select *
+insert into LatestOccurrences select uri, key, quantity
+output all;
+
+@Name('zero_Occurrences_heartbeat')
+on pattern [every timer:at(*,*,*,*,*,*/55)]
+insert into LatestOccurrences
+select uri, key, 0L as quantity
+from nw_CurrentOccurrences;
+
+@Name('OccurrencesPerMinute')
+@Hint('reclaim_group_aged=110,reclaim_group_freq=60')
+insert into OccurrencesPerMinute
+select uri, key, cast(sum(cast(quantity,int)),long) as quantity
+from LatestOccurrences.win:time(1 minutes)
+group by uri, key
+output snapshot at(*/1,*,*,*,*);
