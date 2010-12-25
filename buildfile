@@ -39,6 +39,26 @@ module Frogfish
   # COMPILE_LIBRARIES << 'net.liftweb:lift-util_2.8.1:jar:2.2-SNAPSHOT'
   # COMPILE_LIBRARIES << 'log4j:log4j:jar:1.2.16'
   RUN_LIBRARIES = COMPILE_LIBRARIES.dup
+
+  HOSTNAME=`hostname`.chomp
+  DATE=Time.now.strftime("%Y%m%d%H%M%S")
+  JMX_PORT = 4679
+  HEAP_MIN="512m"
+  HEAP_MAX="512m"
+  GC_LOG="/Users/tonio/Desktop/frogfish-scala.gc.#{DATE}.log"
+
+  JAVA_ARGS = []
+  JAVA_ARGS << "-server"
+  JAVA_ARGS << "-Dcom.sun.management.jmxremote"
+  JAVA_ARGS << "-Dcom.sun.management.jmxremote.port=#{JMX_PORT}"
+  JAVA_ARGS << "-Dcom.sun.management.jmxremote.ssl=false"
+  JAVA_ARGS << "-Dcom.sun.management.jmxremote.authenticate=false"
+  JAVA_ARGS << "-Djava.rmi.server.hostname=#{HOSTNAME}"
+  JAVA_ARGS << "-XX:NewRatio=2"
+  JAVA_ARGS << "-Xms#{HEAP_MIN}"
+  JAVA_ARGS << "-Xmx#{HEAP_MAX}"
+  JAVA_ARGS << "-Xloggc:#{GC_LOG}"
+  JAVA_ARGS << "-XX:+PrintGCDetails"
 end
 
 desc "The Frogfish-scala project"
@@ -49,7 +69,7 @@ define "frogfish-scala" do
   Frogfish::COMPILE_LIBRARIES.each { |x| compile.with transitive(x) }
   Frogfish::RUN_LIBRARIES.each { |x| run.with transitive(x) }
 
-  run.using :main => "com.antonioalegria.frogfish.Frogfish", :java_args => ["-server"]
+  run.using :main => "com.antonioalegria.frogfish.Frogfish", :java_args => Frogfish::JAVA_ARGS
 
   package :jar
 end

@@ -4,7 +4,7 @@ module com.antonioalegria.frogfish.epl.occurrence_map_monit;
 uses com.antonioalegria.frogfish.epl.occurrence_types;
 uses com.antonioalegria.frogfish.epl.occurrence_map;
 
-@Name('create_nw_CurrentOccurrences')
+@Name('out_ValueUpdateMap1')
 on pattern [ every timer:at(*/1,*,*,*,*,30)]
 insert into out_ValueUpdate
 select 'com.antonioalegria.frogfish.monit.nw_CurrentOccurrences.size' as uri,
@@ -27,7 +27,7 @@ group by uri;
 // select *
 // from OccurrencesPerMinute;
 
-@Name('OccurrenceStat')
+@Name('out_ValueUpdateMap2')
 insert into out_ValueUpdate
 select 'com.antonioalegria.frogfish.monit.Occurrence.count' as uri,
        uri as key,

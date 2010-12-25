@@ -10,7 +10,7 @@
   </appender>
 
   <logger name="com.espertech.esper" level="WARN" />
-  <logger name="com.antonioalegria.frogfish" level="DEBUG" />
+  <logger name="com.antonioalegria.frogfish" level="INFO" />
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />

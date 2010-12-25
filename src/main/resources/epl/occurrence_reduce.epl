@@ -29,7 +29,7 @@ output snapshot at(*/5,*,*,*,*,10);
 insert into OccurrenceTrix
 select uri, key, trix, ema1 as ema, period, datapoints
 from OccurrencesPerMinute.std:groupwin(uri, key).custom:trix(60, 36, cast(quantity,double)).win:time(55 seconds)
-output snapshot at(*/13,*,*,*,*,15);
+output snapshot at(*/12,*,*,*,*,15);
 
 @Name('OccurrenceSma_5')
 @Hint('reclaim_group_aged=110,reclaim_group_freq=60')
@@ -56,7 +56,7 @@ output snapshot at(*/5,*,*,*,*,10);
 insert into OccurrenceSma
 select uri, key, total/60D as sma, 60L as period, datapoints
 from OccurrencesPerMinute.std:groupwin(uri, key).win:length(60).stat:uni(quantity).win:time(55 seconds)
-output snapshot at(*/11,*,*,*,*,15);
+output snapshot at(*/12,*,*,*,*,15);
 
 @Name('OccurrenceStat')
 insert into OccurrenceStat

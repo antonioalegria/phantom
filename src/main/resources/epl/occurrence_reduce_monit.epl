@@ -14,7 +14,7 @@ uses com.antonioalegria.frogfish.epl.occurrence_reduce;
 // group by uri
 // output last at(*/1,*,*,*,*,30);
 
-@Name('OccurrenceStat')
+@Name('out_ValueUpdateReduce')
 insert into out_ValueUpdate
 select 'OccurrenceStat.count' as uri,
        uri||':'||cast(period,string) as key,

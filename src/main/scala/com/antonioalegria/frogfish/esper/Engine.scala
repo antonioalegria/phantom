@@ -26,7 +26,7 @@ class OpenWireUpdateListener(connector: OpenWire, topic: String, eventType: Stri
         val eventType = evtBean.getEventType.getName
         val eventJson = jsonMapper.writeValueAsString(evtBean.getUnderlying)
         connector.pub(topic, eventJson, 300)
-        info("pub("+topic+") "+eventType+"("+eventJson+")")
+        debug("pub("+topic+") "+eventType+"("+eventJson+")")
     }
 
     override def update(newEvents: Array[EventBean], oldEvents: Array[EventBean]) {
@@ -45,7 +45,7 @@ class LogUpdateListener extends UpdateListener with Slf4jLogger {
     def processEvent(evtBean: EventBean) {
         val eventType = evtBean.getEventType.getName
         val eventJson = jsonMapper.writeValueAsString(evtBean.getUnderlying)
-        info(eventJson)
+        warn(eventType+": "+eventJson)
     }
 
     override def update(newEvents: Array[EventBean], oldEvents: Array[EventBean]) {
@@ -70,6 +70,15 @@ class Engine(engineId: String, xmlConfig: String = "esper.cfg.xml", eplFiles: Li
     eplFiles.foreach(installEplFile)
     deployModules
     outputMaps.foreach(arg => installOutputHandler(arg._1, arg._2))
+    admin.getStatementNames.foreach(checkOutputStatement)
+
+    def checkOutputStatement(stmtName: String) {
+        debug("checkOutputStatement: "+stmtName)
+        if (stmtName.startsWith("out_")) {
+            info("Found output statement "+stmtName)
+            admin.getStatement(stmtName).addListener(new LogUpdateListener)
+        }
+    }
 
     def installEplFile(filePath: String) {
         info("Installing EPL module "+filePath)
