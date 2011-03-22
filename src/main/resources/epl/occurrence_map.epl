@@ -3,6 +3,7 @@ module com.antonioalegria.frogfish.epl.occurrence_map;
 
 uses com.antonioalegria.frogfish.epl.occurrence_types;
 
+// TODO: make window size easily configurable
 @Name('create_nw_CurrentOccurrences')
 create window nw_CurrentOccurrences.win:time(61 minutes).std:unique(uri, key) as Occurrence;
 
@@ -21,7 +22,7 @@ from nw_CurrentOccurrences;
 @Name('OccurrencesPerMinute')
 @Hint('reclaim_group_aged=110,reclaim_group_freq=60')
 insert into OccurrencesPerMinute
-select uri, key, cast(sum(cast(quantity,int)),long) as quantity
+select uri, key, sum(cast(quantity,int)) as quantity
 from LatestOccurrences.win:time(1 minutes)
 group by uri, key
 output snapshot at(*/1,*,*,*,*);
