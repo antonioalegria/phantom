@@ -9,8 +9,9 @@ COPYRIGHT = ""
 
 # Specify Maven 2.0 remote repositories here, like this:
 #repositories.remote << "http://www.ibiblio.org/maven2/"
-repositories.remote << "http://repo1.maven.org/maven2/"
+repositories.remote << "http://repo1.maven.org/maven2"
 repositories.remote << "http://no-commons-logging.zapto.org/mvn2"
+repositories.remote << "http://repository.jboss.org/maven2"
 
 module Frogfish
   COMPILE_LIBRARIES = []
@@ -18,22 +19,22 @@ module Frogfish
   COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:99.0-does-not-exist'
   COMPILE_LIBRARIES << 'org.slf4j:jcl-over-slf4j:jar:1.6.1'
   COMPILE_LIBRARIES << 'org.slf4j:slf4j-api:jar:1.6.1'
-  COMPILE_LIBRARIES << 'ch.qos.logback:logback-core:jar:0.9.26'
-  COMPILE_LIBRARIES << 'ch.qos.logback:logback-classic:jar:0.9.26'
+  COMPILE_LIBRARIES << 'ch.qos.logback:logback-core:jar:0.9.28'
+  COMPILE_LIBRARIES << 'ch.qos.logback:logback-classic:jar:0.9.28'
 
   # ESPER
-  COMPILE_LIBRARIES << 'com.espertech:esper:jar:4.0.0'
+  COMPILE_LIBRARIES << 'com.espertech:esper:jar:4.1.0'
 
   # AMQ
   COMPILE_LIBRARIES << 'org.apache.activemq:activemq-core:jar:5.4.2'
 
   # JSON
-  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-core-asl:jar:1.6.3'
-  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-mapper-asl:jar:1.6.3'
+  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-core-asl:jar:1.7.4'
+  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-mapper-asl:jar:1.7.4'
 
   # CORE & COMMON
   COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'
-  COMPILE_LIBRARIES << 'commons-lang:commons-lang:jar:2.5'
+  COMPILE_LIBRARIES << 'commons-lang:commons-lang:jar:2.6'
 
   RUN_LIBRARIES = COMPILE_LIBRARIES.dup
 
