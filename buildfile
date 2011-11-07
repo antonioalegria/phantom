@@ -17,20 +17,20 @@ module Frogfish
   COMPILE_LIBRARIES = []
   # LOGGING
   COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:99.0-does-not-exist'
-  COMPILE_LIBRARIES << 'org.slf4j:jcl-over-slf4j:jar:1.6.1'
-  COMPILE_LIBRARIES << 'org.slf4j:slf4j-api:jar:1.6.1'
-  COMPILE_LIBRARIES << 'ch.qos.logback:logback-core:jar:0.9.28'
-  COMPILE_LIBRARIES << 'ch.qos.logback:logback-classic:jar:0.9.28'
+  COMPILE_LIBRARIES << 'org.slf4j:jcl-over-slf4j:jar:1.6.4'
+  COMPILE_LIBRARIES << 'org.slf4j:slf4j-api:jar:1.6.4'
+  COMPILE_LIBRARIES << 'ch.qos.logback:logback-core:jar:1.0.0'
+  COMPILE_LIBRARIES << 'ch.qos.logback:logback-classic:jar:1.0.0'
 
   # ESPER
-  COMPILE_LIBRARIES << 'com.espertech:esper:jar:4.1.0'
+  COMPILE_LIBRARIES << 'com.espertech:esper:jar:4.4.0'
 
   # AMQ
-  COMPILE_LIBRARIES << 'org.apache.activemq:activemq-core:jar:5.4.2'
+  COMPILE_LIBRARIES << 'org.apache.activemq:activemq-core:jar:5.5.1'
 
   # JSON
-  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-core-asl:jar:1.7.4'
-  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-mapper-asl:jar:1.7.4'
+  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-core-asl:jar:1.9.2'
+  COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2'
 
   # CORE & COMMON
   COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'

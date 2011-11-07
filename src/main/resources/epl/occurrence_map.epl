@@ -19,6 +19,8 @@ insert into LatestOccurrences
 select uri, key, 0L as quantity
 from nw_CurrentOccurrences;
 
+// TODO: make it more realtime, support configurable time slices
+// or have more than 1 predefined set of timeslices
 @Name('OccurrencesPerMinute')
 @Hint('reclaim_group_aged=110,reclaim_group_freq=60')
 insert into OccurrencesPerMinute

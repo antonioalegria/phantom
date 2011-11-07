@@ -24,7 +24,7 @@ class OpenWireInputListener(uri: String, topic: String, eventType: String, engin
 
 object Frogfish extends Slf4jLogger {
     val engineId = "FrogfishOccurrenceMapReducer"
-    val connectorUri = "tcp://user:user@192.168.180.110:61616"
+    val connectorUri = "tcp://user:user@localhost:61616" //"tcp://user:user@192.168.180.110:61616"
     val inputMap = Map("uri" -> connectorUri, "topic" -> "core.Occurrence", "eventType" -> "Occurrence") :: Nil
     val outputMap = Map("uri" -> connectorUri, "topic" -> "core.OccurrenceStat", "eventType" -> "OccurrenceStat") :: Nil
     val epl = "epl/occurrence_types.epl" :: "epl/occurrence_map.epl" :: "epl/occurrence_map_monit.epl" :: "epl/occurrence_reduce.epl" :: "epl/occurrence_reduce_monit.epl" :: Nil
