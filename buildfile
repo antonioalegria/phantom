@@ -35,6 +35,7 @@ module Frogfish
   # CORE & COMMON
   COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'
   COMPILE_LIBRARIES << 'commons-lang:commons-lang:jar:2.6'
+  COMPILE_LIBRARIES << '../FrogfishUtil/dist/lib/FrogfishUtil-0.0.3-1.jar'
 
   RUN_LIBRARIES = COMPILE_LIBRARIES.dup
 
