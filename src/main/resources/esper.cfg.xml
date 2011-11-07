@@ -2,7 +2,7 @@
 
 <esper-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://www.espertech.com/schema/esper"
-    xsi:noNamespaceSchemaLocation="esper-configuration-3-0.xsd">
+    xsi:noNamespaceSchemaLocation="esper-configuration-4-0.xsd">
 
   <engine-settings>
     <defaults>
