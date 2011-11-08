@@ -16,7 +16,7 @@ repositories.remote << "http://repository.jboss.org/maven2"
 module Frogfish
   COMPILE_LIBRARIES = []
   # LOGGING
-  COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:99.0-does-not-exist'
+  # COMPILE_LIBRARIES << 'commons-logging:commons-logging:jar:99.0-does-not-exist'
   COMPILE_LIBRARIES << 'org.slf4j:jcl-over-slf4j:jar:1.6.4'
   COMPILE_LIBRARIES << 'org.slf4j:slf4j-api:jar:1.6.4'
   COMPILE_LIBRARIES << 'ch.qos.logback:logback-core:jar:1.0.0'
@@ -33,7 +33,8 @@ module Frogfish
   COMPILE_LIBRARIES << 'org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2'
 
   # CORE & COMMON
-  COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'
+  # COMPILE_LIBRARIES << 'javax.jms:jms:jar:1.1'
+  COMPILE_LIBRARIES << 'lib/javax.jms-1.1.jar'
   COMPILE_LIBRARIES << 'commons-lang:commons-lang:jar:2.6'
   COMPILE_LIBRARIES << '../FrogfishUtil/dist/lib/FrogfishUtil-0.0.3-1.jar'
 
