@@ -1,0 +1,10 @@
+
+module com.antonioalegria.frogfish.epl.occurrence_types;
+
+@Name('codebits-decl_in_Tweet')
+create schema Tweet as (uri string, key string, quantity long, ts long);
+
+@Name('codebits-Tweets_per_minute_1m')
+insert into out_TweetsPerMinute
+select count(*) as count
+from Tweets.win:time_batch(1 minute)
