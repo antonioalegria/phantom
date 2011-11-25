@@ -1,0 +1,5 @@
+// insert into out_RetweetCount
+// select max(retweet_count), min(retweet_count), avg(retweet_count), count(*) as total_tweets from Tweets(retweet = true).win:time(1 second);
+// 
+// insert into out_Urls
+// select count(*) as total_tweets from Tweets(retweet = true).win:time(1 second);

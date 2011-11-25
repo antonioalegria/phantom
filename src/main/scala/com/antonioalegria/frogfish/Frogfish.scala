@@ -28,9 +28,13 @@ object Frogfish extends Slf4jLogger {
     // val inputMap = Map("uri" -> connectorUri, "topic" -> "core.Occurrence", "eventType" -> "Occurrence") :: Nil
     // val outputMap = Map("uri" -> connectorUri, "topic" -> "core.OccurrenceStat", "eventType" -> "OccurrenceStat") :: Nil
     // val epl = "epl/occurrence_types.epl" :: "epl/occurrence_map.epl" :: "epl/occurrence_map_monit.epl" :: "epl/occurrence_reduce.epl" :: "epl/occurrence_reduce_monit.epl" :: Nil
-    val inputMap  = Map("uri" -> connectorUri, "topic" -> "codebits.Tweets", "eventType" -> "Tweets") :: Nil
+    val inputMap  = Map("uri" -> connectorUri, "topic" -> "codebits.Tweet", "eventType" -> "Tweet") :: 
+                    Map("uri" -> connectorUri, "topic" -> "codebits.TweetHashtag", "eventType" -> "Hashtag") ::
+                    Map("uri" -> connectorUri, "topic" -> "codebits.TweetUrl", "eventType" -> "Url") ::
+                    Map("uri" -> connectorUri, "topic" -> "codebits.TweetMention", "eventType" -> "Mention") :: Nil
+
 	val outputMap = Map("uri" -> connectorUri, "topic" -> "codebits.out.Console", "eventType" -> "Console") :: Nil
-	val epl = "epl/codebits.epl" :: Nil
+	val epl = "epl/codebitsexamples.epl" :: Nil
 	val xmlConfig = "esper.cfg.xml"
 
     var inputListeners: List[OpenWireInputListener] = Nil

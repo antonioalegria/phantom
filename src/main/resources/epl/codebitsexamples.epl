@@ -1,0 +1,143 @@
+
+module com.antonioalegria.frogfish.epl.codebits;
+
+create schema Console as (
+    ts long,
+    message string
+);
+
+create schema Event (
+	id string,  // Event unique identifier
+	ts long     // Timestamp (milliseconds)
+);
+
+create schema Tweet (
+	user       string,	// username (e.g. ‘codebits’)
+	text       string,	// actual tweet
+	retweet_of string	// references a Tweet.id
+) inherits Event;
+
+create schema Hashtag (
+	tweet_id	string, // references a Tweet.id
+	user 		string,
+	value		string
+) inherits Event;
+
+// Create Url and Mention event types as a copy of Hashtag
+
+create schema Url()     copyfrom Hashtag;
+
+create schema Mention() copyfrom Hashtag;
+
+
+
+
+/* === Looks like SQL... === */
+
+select * from Event; // All events
+
+// Only tweets
+select user, text as status
+from Tweet;
+
+
+/* === Filtering === */
+
+// Tweets from @codebits
+select * from Tweet(user = 'codebits');
+
+
+// Another way to do it
+select * from Tweet where user = 'codebits';
+
+
+// All occurrences of #codebits not posted by @codebits
+select user, value as hashtag, current_timestamp() as ts
+from Hashtag(value = 'codebits' and user != 'codebits');
+
+
+/* === Stream Creation and Redirection === */
+
+insert into CodebitsTweets
+select * from Tweet(user = 'codebits');
+
+select * from CodebitsTweets;
+
+
+/* === Aggregation === */
+
+insert into UrlsPerSecondX
+select count(*) as count from Url.win:time_batch(1 sec);
+
+
+// Every second (driven by above rule) calculate for last minute
+// - average Urls tweeted
+// - total Urls tweeted
+select avg(count), sum(count)
+from UrlsPerSecondX.win:length(60);
+
+
+/* === Grouping === */
+
+select value as hashtag, count(*)
+from Hashtag(value != null).win:time(30 seconds)
+group by value;
+
+
+/* === Other Standard Views === */
+
+// Don’t use system clock, use event stream property
+select * from Tweet.win:ext_timed(ts, 5 min);
+
+// Last 10 tweets per user
+select * from Tweet.std:groupwin(user).win:length(10);
+
+// Top 5 Hashtags
+/*select * from HashtagsPerMinute.std:sort(5, count desc);*/
+
+
+// Correlation
+
+// Associate hashtags used to describe a URL
+insert into UrlTags
+select u.value as url, h.value as hashtag
+from Url.std:lastevent()     as u,
+     Hashtag.std:lastevent() as h
+where u.tweet_id = h.tweet_id;
+
+
+insert into UrlTagsCount
+select url, hashtag, count(*) as count
+from UrlTags.win:time(1 hour)
+group by url, hashtag;
+
+// Every minute, output Top 3 hashtags per URL
+select * from UrlTagsCount.ext:sort(3, count desc)
+output snapshot at(*/1,*,*,*,*);
+
+
+// === EVENT PATTERNS
+
+// Measure how long it takes users to respond to Tweet
+insert into ResponseDelay
+select t.id        as tweet_id,
+       t.user      as author,
+       m.value     as responder,
+       t.ts        as start_ts,
+       m.ts        as stop_ts,
+       m.ts - t.ts as duration
+from pattern [
+	every (t=Tweet -> m=Mention(value = t.user))
+];
+
+
+
+
+
+/* Detecting Missing Events */
+
+// No Tweet from @codebits in 1 hour
+select *
+from pattern [ every Tweet(user = 'codebits') ->
+	(timer:interval(1 hour) and not Tweet(user = 'codebits'))
+];

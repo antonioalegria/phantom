@@ -1,45 +1,59 @@
 
 module com.antonioalegria.frogfish.epl.codebits;
 
-create schema Console as (ts long, message string);
+create schema console as (
+    ts long,
+    message string
+);
 
 create schema Tweet as (
 	id string,
-	created_at long, 
-	screen_name string,
-	text string,
-	retweet_count int,
-	hashtags string[],
-	urls string[],
-	mentions string[],
-	retweet boolean,
-	favorited boolean,
-	retweet_of string,
-	in_reply_to_status_id string,
-	in_reply_to_screen_name string);
-
-create schema Hashtag as (
-	hashtag string,
 	ts long, 
-	screen_name string,
+	user string,
 	text string,
-	retweet_count int,
 	hashtags string[],
 	urls string[],
 	mentions string[],
 	retweet_of string,
 	in_reply_to_status_id string,
-	in_reply_to_screen_name string);
+	in_reply_to_screen_name string
+);
 
+create schema TweetHashtag as (
+    tweet_id string,
+    ts long,
+    user string,
+    hashtag string
+);
 
+create schema TweetUrl as (
+    tweet_id string,
+    ts long,
+    user string,
+    url string
+);
 
-@Name('out_Tweets_per_minute_1m')
+create schema TweetMention as (
+    tweet_id string,
+    ts long,
+    user string,
+    mention string
+);
+
+@Name('out_TweetCount')
 insert into out_TweetCount
-select count(*) as count
-from Tweets.win:time(1 second);
+select count(*) from Tweet.win:time(30 seconds);
 
-@Name('out_Tweets_per_minute_1m')
-insert into out_Hashtag
-select hashtags.selectFrom(i => 
-	new {hashtag = i}) as batata from Tweets;
+@Name('out_TweetHashtag')
+insert into out_TweetHashtag
+select count(*) from TweetHashtag.win:time(30 seconds);
+
+@Name('out_TweetUrl')
+insert into out_TweetUrl
+select count(*) from TweetUrl.win:time(30 seconds);
+
+@Name('out_TweetMention')
+insert into out_TweetMention
+select count(*) from TweetMention.win:time(30 seconds);
+
 
