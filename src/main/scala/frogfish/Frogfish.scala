@@ -1,10 +1,10 @@
-package com.antonioalegria.frogfish
+package frogfish
 
 import org.codehaus.jackson.map.ObjectMapper
 
-import com.antonioalegria.frogfish.pubsub._
-import com.antonioalegria.frogfish.esper._
-import com.antonioalegria.frogfish.util._
+import frogfish.pubsub._
+import frogfish.phantom.esper._
+import frogfish.util._
 
 class OpenWireInputListener(uri: String, topic: String, eventType: String, engine: Engine) extends Slf4jLogger {
     val jsonMapper = new ObjectMapper

@@ -1,4 +1,4 @@
-package com.antonioalegria.frogfish.esper
+package frogfish.phantom.esper
 
 import com.espertech.esper.client.Configuration
 import com.espertech.esper.client.EPServiceProvider
@@ -14,8 +14,8 @@ import java.util.ArrayList
 
 import org.codehaus.jackson.map.ObjectMapper
 
-import com.antonioalegria.frogfish.pubsub.OpenWire
-import com.antonioalegria.frogfish.util.Slf4jLogger
+import frogfish.pubsub.OpenWire
+import frogfish.util.Slf4jLogger
 
 object Engine { }
 

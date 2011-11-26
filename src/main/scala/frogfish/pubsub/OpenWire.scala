@@ -1,11 +1,11 @@
-package com.antonioalegria.frogfish.pubsub
+package frogfish.pubsub
 
 import org.apache.commons.lang.StringUtils
 import org.apache.activemq.ActiveMQConnectionFactory
 import javax.jms._
 import java.net.URI
 
-import com.antonioalegria.frogfish.util.Slf4jLogger
+import frogfish.util.Slf4jLogger
 
 class OpenWire(uri: String) extends MessageListener with Slf4jLogger {
     val parsedUri  = new URI(uri)

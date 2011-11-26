@@ -1,5 +1,5 @@
 
-package com.antonioalegria.frogfish.util
+package frogfish.util
 
 import org.slf4j.{Logger, LoggerFactory}
 
