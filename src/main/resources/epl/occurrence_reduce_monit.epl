@@ -1,8 +1,8 @@
 
-module com.antonioalegria.frogfish.epl.occurrence_reduce_monit;
+module frogfish.epl.occurrence_reduce_monit;
 
-uses com.antonioalegria.frogfish.epl.occurrence_types;
-uses com.antonioalegria.frogfish.epl.occurrence_reduce;
+uses frogfish.epl.occurrence_types;
+uses frogfish.epl.occurrence_reduce;
 
 // @Name('OccurrenceStat')
 // insert into out_ValueUpdate

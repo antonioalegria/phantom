@@ -1,8 +1,8 @@
 
-module com.antonioalegria.frogfish.epl.occurrence_map_monit;
+module frogfish.epl.occurrence_map_monit;
 
-uses com.antonioalegria.frogfish.epl.occurrence_types;
-uses com.antonioalegria.frogfish.epl.occurrence_map;
+uses frogfish.epl.occurrence_types;
+uses frogfish.epl.occurrence_map;
 
 @Name('out_ValueUpdateMap1')
 on pattern [ every timer:at(*/1,*,*,*,*,30)]

@@ -1,5 +1,5 @@
 
-module com.antonioalegria.frogfish.epl.occurrence_types;
+module frogfish.epl.occurrence_types;
 
 @Name('broa-decl_in_Tweet')
 create schema Occurrence as (uri string, key string, quantity long, ts long);

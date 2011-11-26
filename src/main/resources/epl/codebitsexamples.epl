@@ -1,5 +1,5 @@
 
-module com.antonioalegria.frogfish.epl.codebits;
+module frogfish.epl.codebitsexamples;
 
 create schema Console as (
     ts long,

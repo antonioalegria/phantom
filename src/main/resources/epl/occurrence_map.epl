@@ -1,7 +1,7 @@
 
-module com.antonioalegria.frogfish.epl.occurrence_map;
+module frogfish.epl.occurrence_map;
 
-uses com.antonioalegria.frogfish.epl.occurrence_types;
+uses frogfish.epl.occurrence_types;
 
 // TODO: make window size easily configurable
 @Name('create_nw_CurrentOccurrences')

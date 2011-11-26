@@ -1,8 +1,8 @@
 
-module com.antonioalegria.frogfish.epl.occurrence_reduce;
+module frogfish.epl.occurrence_reduce;
 
-uses com.antonioalegria.frogfish.epl.occurrence_types;
-// TODO: no need?? uses com.antonioalegria.frogfish.epl.occurrence_map;
+uses frogfish.epl.occurrence_types;
+// TODO: no need?? uses frogfish.epl.occurrence_map;
 
 @Name('OccurrenceTrix_5_3')
 @Hint('reclaim_group_aged=110,reclaim_group_freq=60')
